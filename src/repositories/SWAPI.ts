@@ -132,8 +132,8 @@ export class SWAPI {
     return {
       total: data.count,
       pagination: {
-        next: data.next,
-        previous: data.previous
+        next: data.next ? true : false,
+        previous: data.previous ? true : false
       },
       persons
     }
