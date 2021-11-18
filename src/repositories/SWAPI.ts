@@ -1,6 +1,7 @@
 import axios from "axios";
 import { movies as movieInstance } from "./../routes"
 import { Giphy } from "./Giphy";
+
 export interface Movie {
   name: string;
   url?: string;
@@ -114,7 +115,7 @@ export class SWAPI {
       // define person by array index
       const person = data.results[i];
 
-      let gif = await giphy.getData(person.name) as string;
+      let gif = await giphy.getData(`Star Wars ` + person.name);
 
       // add person data to array
       persons = persons.concat({
