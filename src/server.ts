@@ -4,8 +4,8 @@ import { app } from "./app";
 
 // get data from the environment
 const {
-  API_PORT
+  PORT
 } = process.env;
 
 // listen the server
-app.listen(API_PORT || 3000, () => console.log(`[UP] endpoint port: ${API_PORT}`));
+app.listen(PORT || 3000, () => console.log(`[UP] endpoint port: ${PORT}`));
