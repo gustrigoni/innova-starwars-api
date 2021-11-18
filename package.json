@@ -5,6 +5,11 @@
   "repository": "https://github.com/gustrigoni/innova-starwars-api.git",
   "author": "gustrigoni <gustrigoni@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "dev": "yarn tsnd src/server.ts",
+    "build": "yarn tsc",
+    "start": "node dist/server.js"
+  },
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/dotenv": "^8.2.0",

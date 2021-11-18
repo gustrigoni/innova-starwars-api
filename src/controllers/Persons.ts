@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Giphy } from "../repositories/Giphy";
+import { SWAPI } from "../repositories/SWAPI";
 
 export class Persons {
 
@@ -7,25 +7,21 @@ export class Persons {
 
   // method to handle the request
   async getData(
-    { params }: Request,
+    { params, query }: Request,
     response: Response,
   ) {
 
-    // intance giphy
-    const giphy = new Giphy();
+    // instance SWAPI repository
+    const swapi = new SWAPI();
 
     // get properties from params
     const { name } = params;
 
-    // get gif image from Giphy API by keyword name
-    const gif = await giphy.getGif(name);
+    // get persons data
+    const data = await swapi.getData(name, query.page as string);
 
     // request response
-    return response.json({
-      name,
-      key: process.env.GIPHY_API_KEY,
-      gif
-    });
+    return response.json(data);
 
   }
 
