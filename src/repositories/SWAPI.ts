@@ -115,7 +115,7 @@ export class SWAPI {
       // define person by array index
       const person = data.results[i];
 
-      let gif = await giphy.getData(`Star Wars ` + person.name);
+      let gif = await giphy.getData(person.name + `Star Wars`);
 
       // add person data to array
       persons = persons.concat({
