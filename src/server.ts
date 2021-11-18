@@ -8,4 +8,4 @@ const {
 } = process.env;
 
 // listen the server
-app.listen(PORT || 3000, () => console.log(`[UP] endpoint port: ${PORT}`));
+app.listen(PORT, () => console.log(`[UP] endpoint port: ${PORT}`));
