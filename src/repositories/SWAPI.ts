@@ -69,7 +69,7 @@ export class SWAPI {
       movie = {
         name: data.title,
         url,
-        releaseDate: data.release_date,
+        releaseDate: data.release_date.replace('-', '/'),
         description: data.opening_crawl
       }
 
