@@ -1,20 +1,19 @@
 import axios from "axios";
+import { movies as movieInstance } from "./../routes"
 import { Giphy } from "./Giphy";
-
-interface Movie {
+export interface Movie {
   name: string;
   url?: string;
   releaseDate: string;
   description: string;
 }
-
 interface Person {
   name: string;
   birth: string;
   gender: string;
   eyeColor: string;
+  films: string[];
   image: string;
-  movies: Movie[];
 }
 
 export interface GiphyGif {
@@ -24,16 +23,15 @@ export interface GiphyGif {
 
 export class SWAPI {
 
-  private cachedMovies: Movie[] = [];
-  private cachedGifs: GiphyGif[] = [];
-
   constructor() { }
 
   /**
    * Get movies from SWAPI by url list
    * @param movies 
    */
-  private async getMovies(moviesUrl: string[]) {
+  async getMovies(
+    moviesUrl: string[] = [],
+  ) {
 
     // define variable to concat movie data
     let movies: Movie[] = [];
@@ -44,14 +42,30 @@ export class SWAPI {
       // define movie url by index
       const url: string = moviesUrl[i];
 
-      // if this movie was cached continue the loop flow
-      if (this.cachedMovies.find((m: Movie) => m.url === url)) continue;
+      // try to find movie cached
+      let movie = movieInstance.cachedMovies.find((m: Movie) => m.url === url);
+
+      // check if movie is cached
+      if (movie) {
+
+        // add movie data to array
+        movies = movies.concat({
+          name: movie.name,
+          url: movie.url,
+          releaseDate: movie.releaseDate,
+          description: movie.description
+        });
+
+        // continue the loop flow
+        continue;
+
+      }
 
       // get movie data from url
       const { data } = await axios.get(url);
 
       // define movie data
-      const movie = {
+      movie = {
         name: data.title,
         url,
         releaseDate: data.release_date,
@@ -62,7 +76,7 @@ export class SWAPI {
       movies = movies.concat(movie);
 
       // add to cache
-      this.cachedMovies.push(movie);
+      movieInstance.cachedMovies.push(movie);
 
     }
 
@@ -75,7 +89,7 @@ export class SWAPI {
    * Method to a random gif link by keyword
    * @returns string | null
    */
-  async getData(
+  async getPerson(
     name?: string,
     page?: string
   ) {
@@ -100,23 +114,7 @@ export class SWAPI {
       // define person by array index
       const person = data.results[i];
 
-      // get movies data
-      const movies = await this.getMovies(person.films);
-
-      let gif = this.cachedGifs.find((g: GiphyGif) => g.id === person.name)?.url;
-
-      if (!gif) {
-
-        // get gif image from Giphy API by person name
-        gif = await giphy.getData(person.name) as string;
-
-        // add to cache
-        this.cachedGifs.push({
-          id: person.name,
-          url: gif
-        });
-
-      }
+      let gif = await giphy.getData(person.name) as string;
 
       // add person data to array
       persons = persons.concat({
@@ -124,8 +122,8 @@ export class SWAPI {
         birth: person.birth_year,
         gender: person.gender,
         eyeColor: person.eye_color,
+        films: person.films,
         image: gif,
-        movies,
       });
 
     }

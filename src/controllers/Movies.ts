@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import { SWAPI } from "../repositories/SWAPI";
+import { Movie, SWAPI } from "../repositories/SWAPI";
 
-export class Persons {
+export class Movies {
 
-  constructor() { }
+  public cachedMovies: Movie[] = [];
 
   // method to handle the request
   async getData(
-    { params, query }: Request,
+    { query }: Request,
     response: Response,
   ) {
 
@@ -15,10 +15,10 @@ export class Persons {
     const swapi = new SWAPI();
 
     // get properties from params
-    const { name } = params;
+    const { url } = query;
 
-    // get persons data
-    const data = await swapi.getPerson(name, query.page as string);
+    // get movies data
+    const data = await swapi.getMovies(url as string[]);
 
     // request response
     return response.json(data);

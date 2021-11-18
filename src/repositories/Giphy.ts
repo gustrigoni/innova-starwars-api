@@ -1,5 +1,4 @@
 import axios from "axios";
-
 export class Giphy {
 
   constructor() { }
@@ -37,8 +36,11 @@ export class Giphy {
     // check if have a result by this keyword
     if (data.length > 0) {
 
+      // it does a random index for array between 0 and data values.
+      let index = Math.floor(Math.random() * data.length);
+
       // define image source url
-      image = data[0].images.original.url;
+      image = data[index].images.original.url;
 
     }
 
