@@ -1,6 +1,6 @@
 import axios from "axios";
 import { movies as movieInstance } from "./../routes"
-import { Giphy } from "./Giphy";
+import { Akabab } from "./Akabab";
 
 export interface Movie {
   name: string;
@@ -15,11 +15,6 @@ interface Person {
   eyeColor: string;
   films: string[];
   image: string;
-}
-
-export interface GiphyGif {
-  id: string;
-  url: string;
 }
 
 export class SWAPI {
@@ -96,7 +91,7 @@ export class SWAPI {
   ) {
 
     // intance Giphy repository
-    const giphy = new Giphy();
+    const akabab = new Akabab();
 
     // search gifs by keyword
     const { data } = await axios.get('https://swapi.dev/api/people/', {
@@ -115,7 +110,8 @@ export class SWAPI {
       // define person by array index
       const person = data.results[i];
 
-      let gif = await giphy.getData(person.name + `Star Wars`);
+      // Star Wars person image
+      let image = await akabab.getData(person.name);
 
       // add person data to array
       persons = persons.concat({
@@ -124,7 +120,7 @@ export class SWAPI {
         gender: person.gender,
         eyeColor: person.eye_color,
         films: person.films,
-        image: gif,
+        image,
       });
 
     }
